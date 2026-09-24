@@ -9,376 +9,376 @@ import io
 import sys
 import matplotlib.pyplot as plt
 
-EPSILON_0 = 8.854e-14  # Está en centímetros 
+EPSILON_0 = 8.854e-14  # It is in centimeters 
 pi = np.pi 
 
 # ==============================================================================
-# CONFIGURACIÓN MULTI-BIOMASA (Rutas Dinámicas de Entrada y Salida)
+# MULTI-BIOMASS CONFIGURATION (Dynamic Input and Output Paths)
 # ==============================================================================
-Configuracion_Biomasas = [
+Biomass_Configuration = [
     {
-        "Nombre": "Fruta Milagrosa",
-        "Ruta_Base": r"./Fruta_Milagrosa",
-        "Ruta_Imagenes": r"./Fruta_Milagrosa/Imagenes",
-        "Nombre_Excel": "Reporte_Consolidado_Fruta_Milagrosa.xlsx"
+        "Name": "Miracle Fruit",
+        "Base_Path": r"./Fruta_Milagrosa",
+        "Images_Path": r"./Fruta_Milagrosa/Images",
+        "Excel_Name": "Consolidated_Report_Miracle_Fruit.xlsx"
     },
     {
-        "Nombre": "Pergamino de Café",
-        "Ruta_Base": r"./Coffee_Parchment",
-        "Ruta_Imagenes": r"./Coffee_Parchment/Imagenes_PC",
-        "Nombre_Excel": "Reporte_Consolidado_Coffee_Parchment.xlsx"
+        "Name": "Coffee Parchment",
+        "Base_Path": r"./Coffee_Parchment",
+        "Images_Path": r"./Coffee_Parchment/Images_CP",
+        "Excel_Name": "Consolidated_Report_Coffee_Parchment.xlsx"
     }
 ]
 
 
-# --- TUS DATOS BASE ---
-datos_base = [
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "SFM", "Muestra": "1er", "Diametro_cm": 1.203, "Distancia_cm": 0.300},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "SFM", "Muestra": "2do", "Diametro_cm": 1.245, "Distancia_cm": 0.285},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "PFM", "Muestra": "1er", "Diametro_cm": 1.240, "Distancia_cm": 0.250},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "PFM", "Muestra": "2do", "Diametro_cm": 1.235, "Distancia_cm": 0.260},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "CFM", "Muestra": "1er", "Diametro_cm": 1.255, "Distancia_cm": 0.345},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "CFM", "Muestra": "2do", "Diametro_cm": 1.275, "Distancia_cm": 0.330},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "SM",  "Muestra": "1er", "Diametro_cm": 1.260, "Distancia_cm": 0.300},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "SM",  "Muestra": "2do", "Diametro_cm": 1.245, "Distancia_cm": 0.280},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "CM",  "Muestra": "1er", "Diametro_cm": 1.245, "Distancia_cm": 0.280},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "CM",  "Muestra": "2do", "Diametro_cm": 1.250, "Distancia_cm": 0.300},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "HFM", "Muestra": "1er", "Diametro_cm": 1.265, "Distancia_cm": 0.315},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "HFM", "Muestra": "2do", "Diametro_cm": 1.265, "Distancia_cm": 0.315},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "HM",  "Muestra": "1er", "Diametro_cm": 1.250, "Distancia_cm": 0.330},
-    {"Biomasa": "Fruta Milagrosa", "Tipo": "HM",  "Muestra": "2do", "Diametro_cm": 1.280, "Distancia_cm": 0.340},
-    {"Biomasa": "Pergamino de Café", "Tipo": "CMC", "Muestra": "1er", "Diametro_cm": 1.300, "Distancia_cm": 0.395},
-    {"Biomasa": "Pergamino de Café", "Tipo": "CMC", "Muestra": "2do", "Diametro_cm": 1.295, "Distancia_cm": 0.385},
-    {"Biomasa": "Pergamino de Café", "Tipo": "CPC", "Muestra": "1er", "Diametro_cm": 1.245, "Distancia_cm": 0.335},
-    {"Biomasa": "Pergamino de Café", "Tipo": "CPC", "Muestra": "2do", "Diametro_cm": 1.255, "Distancia_cm": 0.325},
-    {"Biomasa": "Pergamino de Café", "Tipo": "PCT", "Muestra": "1er", "Diametro_cm": 1.265, "Distancia_cm": 0.345},
-    {"Biomasa": "Pergamino de Café", "Tipo": "PCT", "Muestra": "2do", "Diametro_cm": 1.265, "Distancia_cm": 0.365},
+# --- YOUR BASE DATA ---
+base_data = [
+    {"Biomass": "Miracle Fruit", "Type": "SFM", "Sample": "1st", "Diameter_cm": 1.203, "Distance_cm": 0.300},
+    {"Biomass": "Miracle Fruit", "Type": "SFM", "Sample": "2nd", "Diameter_cm": 1.245, "Distance_cm": 0.285},
+    {"Biomass": "Miracle Fruit", "Type": "PFM", "Sample": "1st", "Diameter_cm": 1.240, "Distance_cm": 0.250},
+    {"Biomass": "Miracle Fruit", "Type": "PFM", "Sample": "2nd", "Diameter_cm": 1.235, "Distance_cm": 0.260},
+    {"Biomass": "Miracle Fruit", "Type": "CFM", "Sample": "1st", "Diameter_cm": 1.255, "Distance_cm": 0.345},
+    {"Biomass": "Miracle Fruit", "Type": "CFM", "Sample": "2nd", "Diameter_cm": 1.275, "Distance_cm": 0.330},
+    {"Biomass": "Miracle Fruit", "Type": "SM",  "Sample": "1st", "Diameter_cm": 1.260, "Distance_cm": 0.300},
+    {"Biomass": "Miracle Fruit", "Type": "SM",  "Sample": "2nd", "Diameter_cm": 1.245, "Distance_cm": 0.280},
+    {"Biomass": "Miracle Fruit", "Type": "CM",  "Sample": "1st", "Diameter_cm": 1.245, "Distance_cm": 0.280},
+    {"Biomass": "Miracle Fruit", "Type": "CM",  "Sample": "2nd", "Diameter_cm": 1.250, "Distance_cm": 0.300},
+    {"Biomass": "Miracle Fruit", "Type": "HFM", "Sample": "1st", "Diameter_cm": 1.265, "Distance_cm": 0.315},
+    {"Biomass": "Miracle Fruit", "Type": "HFM", "Sample": "2nd", "Diameter_cm": 1.265, "Distance_cm": 0.315},
+    {"Biomass": "Miracle Fruit", "Type": "HM",  "Sample": "1st", "Diameter_cm": 1.250, "Distance_cm": 0.330},
+    {"Biomass": "Miracle Fruit", "Type": "HM",  "Sample": "2nd", "Diameter_cm": 1.280, "Distance_cm": 0.340},
+    {"Biomass": "Coffee Parchment", "Type": "CMC", "Sample": "1st", "Diameter_cm": 1.300, "Distance_cm": 0.395},
+    {"Biomass": "Coffee Parchment", "Type": "CMC", "Sample": "2nd", "Diameter_cm": 1.295, "Distance_cm": 0.385},
+    {"Biomass": "Coffee Parchment", "Type": "CPC", "Sample": "1st", "Diameter_cm": 1.245, "Distance_cm": 0.335},
+    {"Biomass": "Coffee Parchment", "Type": "CPC", "Sample": "2nd", "Diameter_cm": 1.255, "Distance_cm": 0.325},
+    {"Biomass": "Coffee Parchment", "Type": "PCT", "Sample": "1st", "Diameter_cm": 1.265, "Distance_cm": 0.345},
+    {"Biomass": "Coffee Parchment", "Type": "PCT", "Sample": "2nd", "Diameter_cm": 1.265, "Distance_cm": 0.365},
 ]
 
-# --- TRANSFORMACIÓN A DICCIONARIO DE BÚSQUEDA RÁPIDA ---
-Geometria_Pellets = {}
-for dato in datos_base:
-    tipo = dato["Tipo"].lower()
-    muestra = dato["Muestra"].lower()
+# --- TRANSFORMATION TO QUICK SEARCH DICTIONARY ---
+Pellet_Geometry = {}
+for data in base_data:
+    type_val = data["Type"].lower()
+    sample = data["Sample"].lower()
     
-    radio = dato["Diametro_cm"] / 2
-    area_cm2 = pi * (radio ** 2)
+    radius = data["Diameter_cm"] / 2
+    area_cm2 = pi * (radius ** 2)
     
-    # Agregamos la Biomasa al diccionario para poder usarla al exportar
-    Geometria_Pellets[(tipo, muestra)] = {
-        "Biomasa": dato["Biomasa"],
+    # We add the Biomass to the dictionary to be able to use it when exporting
+    Pellet_Geometry[(type_val, sample)] = {
+        "Biomass": data["Biomass"],
         "A": area_cm2, 
-        "D": dato["Distancia_cm"]
+        "D": data["Distance_cm"]
     }
 
-print("Geometrías cargadas exitosamente en memoria.\n")
+print("Geometries successfully loaded into memory.\n")
 
-# ACUMULADOR GLOBAL: Aquí guardaremos las tablas de todos los archivos
+# GLOBAL ACCUMULATOR: Here we will save the tables of all files
 
-for config in Configuracion_Biomasas:
+for config in Biomass_Configuration:
     print("=" * 80)
-    print(f"INICIANDO ANÁLISIS DE LA BIOMASA: {config['Nombre']}")
+    print(f"STARTING BIOMASS ANALYSIS: {config['Name']}")
     print("=" * 80)
     
-    # Verificación de entorno: Si la carpeta de imágenes no existe, Python la crea
-    if not os.path.exists(config["Ruta_Imagenes"]):
-        os.makedirs(config["Ruta_Imagenes"])
-        print(f"Creada carpeta de salida visual: {config['Ruta_Imagenes']}")
+    # Environment verification: If the images folder does not exist, Python creates it
+    if not os.path.exists(config["Images_Path"]):
+        os.makedirs(config["Images_Path"])
+        print(f"Created visual output folder: {config['Images_Path']}")
     
-    # --- NUEVO: Verificación y creación de la carpeta "Diagnostico" ---
-    Ruta_Diagnostico = os.path.join(config["Ruta_Base"], "Diagnostico")
-    if not os.path.exists(Ruta_Diagnostico):
-        os.makedirs(Ruta_Diagnostico)
-        print(f"Creada carpeta de diagnóstico: {Ruta_Diagnostico}")
+    # --- NEW: Verification and creation of the "Diagnostic" folder ---
+    Diagnostic_Path = os.path.join(config["Base_Path"], "Diagnostic")
+    if not os.path.exists(Diagnostic_Path):
+        os.makedirs(Diagnostic_Path)
+        print(f"Created diagnostic folder: {Diagnostic_Path}")
 
-    # Buscamos los archivos específicos de la biomasa actual
-    CarpetaMediciones = os.path.join(config["Ruta_Base"], "*.xls")
-    Archivos = glob.glob(CarpetaMediciones)
-    print(f"Archivos válidos encontrados para procesar: {len(Archivos)}\n")
+    # We search for the specific files of the current biomass
+    MeasurementsFolder = os.path.join(config["Base_Path"], "*.xls")
+    Files = glob.glob(MeasurementsFolder)
+    print(f"Valid files found to process: {len(Files)}\n")
 
-    Reporte_Global = []
+    Global_Report = []
 
 
 
-    for i in Archivos: 
+    for i in Files: 
 
-        ArchivosLower = i.lower() 
-        Informacion = os.path.basename(ArchivosLower) 
+        FilesLower = i.lower() 
+        Information = os.path.basename(FilesLower) 
 
-        NombreLimpio = Informacion.replace(".xls", "").replace("cf-", "")
-        Nombres = NombreLimpio.split("_")
+        CleanName = Information.replace(".xls", "").replace("cf-", "")
+        Names = CleanName.split("_")
 
-        tipo_archivo = Nombres[0].strip() 
-        numero_str = Nombres[1].strip()   
+        file_type = Names[0].strip() 
+        number_str = Names[1].strip()   
         
-        if "1" in numero_str:
-            muestra_archivo = "1er"
-        elif "2" in numero_str:
-            muestra_archivo = "2do"
+        if "1" in number_str:
+            file_sample = "1st"
+        elif "2" in number_str:
+            file_sample = "2nd"
         else:
-            muestra_archivo = numero_str 
+            file_sample = number_str 
             
         old_stderr = sys.stderr
         old_stdout = sys.stdout
         sys.stdout = io.StringIO() 
         sys.stderr = io.StringIO()
         
-        ExcelEnMemoria = pd.ExcelFile(i) 
+        ExcelInMemory = pd.ExcelFile(i) 
 
         sys.stderr = old_stderr
         sys.stdout = old_stdout
 
-        pestagnas = ["Data"] + [f"Append{j}" for j in range(1, 10)] 
+        tabs = ["Data"] + [f"Append{j}" for j in range(1, 10)] 
 
-        Bloque_Hojas_Pellet = []
+        Pellet_Sheets_Block = []
         
-        for pestagna in pestagnas: 
+        for tab in tabs: 
             try: 
                 old_stderr = sys.stderr
                 sys.stderr = io.StringIO()
 
-                df_Hoja = pd.read_excel(ExcelEnMemoria, sheet_name=pestagna) 
+                df_Sheet = pd.read_excel(ExcelInMemory, sheet_name=tab) 
 
                 sys.stderr = old_stderr
 
-                ValoresFiltrados = df_Hoja[df_Hoja["F_AB"] >= 8000].copy() 
+                FilteredValues = df_Sheet[df_Sheet["F_AB"] >= 8000].copy() 
 
-                Columnas_Base = ValoresFiltrados[["F_AB", "Gp_AB", "Cp_AB"]].copy() 
-                Columnas_Base["Gp_AB"] = Columnas_Base["Gp_AB"].abs() 
-                Columnas_Base["Cp_AB"] = Columnas_Base["Cp_AB"].abs() 
+                Base_Columns = FilteredValues[["F_AB", "Gp_AB", "Cp_AB"]].copy() 
+                Base_Columns["Gp_AB"] = Base_Columns["Gp_AB"].abs() 
+                Base_Columns["Cp_AB"] = Base_Columns["Cp_AB"].abs() 
 
-                Bloque_Hojas_Pellet.append(Columnas_Base) 
+                Pellet_Sheets_Block.append(Base_Columns) 
 
             except Exception as e:
                 sys.stderr = old_stderr
                 continue
 
 
-    # PROMEDIADO Y CÁLCULO DE ERRORES
-        if Bloque_Hojas_Pellet:
-            Tabla_Temporal = pd.concat(Bloque_Hojas_Pellet, ignore_index=True)
+    # AVERAGING AND ERROR CALCULATION
+        if Pellet_Sheets_Block:
+            Temporal_Table = pd.concat(Pellet_Sheets_Block, ignore_index=True)
             
-            # 1. Agrupamos por frecuencia y sacamos media y desviación estándar simultáneamente
-            Muestra_Agrupada = Tabla_Temporal.groupby("F_AB").agg(
+            # 1. We group by frequency and get mean and standard deviation simultaneously
+            Grouped_Sample = Temporal_Table.groupby("F_AB").agg(
                 MeanGp=("Gp_AB", "mean"),
                 StdGp=("Gp_AB", "std"),
                 MeanCp=("Cp_AB", "mean"),
                 StdCp=("Cp_AB", "std")
             ).reset_index()
 
-            Freq = Muestra_Agrupada["F_AB"]
-            MeanGp = Muestra_Agrupada["MeanGp"]
-            MeanCp = Muestra_Agrupada["MeanCp"]
-            StdGp = Muestra_Agrupada["StdGp"]
-            StdCp = Muestra_Agrupada["StdCp"]
+            Freq = Grouped_Sample["F_AB"]
+            MeanGp = Grouped_Sample["MeanGp"]
+            MeanCp = Grouped_Sample["MeanCp"]
+            StdGp = Grouped_Sample["StdGp"]
+            StdCp = Grouped_Sample["StdCp"]
 
-            # --- EXTRACCIÓN DINÁMICA DE LA GEOMETRÍA ---
-            if (tipo_archivo, muestra_archivo) in Geometria_Pellets:
-                Biomasa = Geometria_Pellets[(tipo_archivo, muestra_archivo)]["Biomasa"]
-                A = Geometria_Pellets[(tipo_archivo, muestra_archivo)]["A"]
-                D = Geometria_Pellets[(tipo_archivo, muestra_archivo)]["D"]
+            # --- DYNAMIC GEOMETRY EXTRACTION ---
+            if (file_type, file_sample) in Pellet_Geometry:
+                Biomass = Pellet_Geometry[(file_type, file_sample)]["Biomass"]
+                A = Pellet_Geometry[(file_type, file_sample)]["A"]
+                D = Pellet_Geometry[(file_type, file_sample)]["D"]
             else:
-                print(f"ALERTA: El pellet '{tipo_archivo}_{muestra_archivo}' no está en la tabla. Saltando...")
+                print(f"WARNING: The pellet '{file_type}_{file_sample}' is not in the table. Skipping...")
                 continue 
 
-    # --- ECUACIONES FÍSICAS EXACTAS (Valores Centrales) ---
+    # --- EXACT PHYSICAL EQUATIONS (Central Values) ---
             TangentLoss = MeanGp / (2 * pi * Freq * MeanCp)
             RealE = (MeanCp * D) / (EPSILON_0 * A)
             ImaE = (MeanGp * D) / (2 * pi * Freq * A * EPSILON_0)
             
-            # NUEVO: Cálculo de Conductividad AC (S/cm)
-            Conductividad = MeanGp * (D / A)
-            # Descomenta la siguiente línea si necesitas obligatoriamente S/mm
-            # Conductividad = Conductividad * 0.1 
+            # NEW: AC Conductivity Calculation (S/cm)
+            Conductivity = MeanGp * (D / A)
+            # Uncomment the following line if you strictly need S/mm
+            # Conductivity = Conductivity * 0.1 
 
-            # --- CÁLCULO DE DESVIACIONES ESTÁNDAR Y ERROR ESTÁNDAR (SEM) ---
-            N = 10 # Tus 10 réplicas (Data + 9 Appends)
-            Raiz_N = np.sqrt(N)
+            # --- STANDARD DEVIATION AND STANDARD ERROR (SEM) CALCULATION ---
+            N = 10 # Your 10 replicates (Data + 9 Appends)
+            Root_N = np.sqrt(N)
 
-            # Errores para Epsilon Real
+            # Errors for Real Epsilon
             Std_RealE = (StdCp * D) / (EPSILON_0 * A)
-            Error_RealE = Std_RealE / Raiz_N
+            Error_RealE = Std_RealE / Root_N
 
-            # Errores para Epsilon Imaginario
+            # Errors for Imaginary Epsilon
             Std_ImaE = (StdGp * D) / (2 * pi * Freq * A * EPSILON_0)
-            Error_ImaE = Std_ImaE / Raiz_N
+            Error_ImaE = Std_ImaE / Root_N
 
-            # NUEVO: Errores para la Conductividad (Dependencia lineal de Gp)
-            Std_Conductividad = StdGp * (D / A)
-            # Si activaste S/mm arriba, debes hacer: Std_Conductividad = Std_Conductividad * 0.1
-            Error_Conductividad = Std_Conductividad / Raiz_N
+            # NEW: Errors for Conductivity (Linear dependence of Gp)
+            Std_Conductivity = StdGp * (D / A)
+            # If you activated S/mm above, you should do: Std_Conductivity = Std_Conductivity * 0.1
+            Error_Conductivity = Std_Conductivity / Root_N
 
-            # Errores para Tangente de Pérdidas
-            Error_Relativo_Gp = StdGp / MeanGp
-            Error_Relativo_Cp = StdCp / MeanCp
-            Std_TanDelta = TangentLoss * np.sqrt(Error_Relativo_Gp**2 + Error_Relativo_Cp**2)
-            Error_TanDelta = Std_TanDelta / Raiz_N
+            # Errors for Loss Tangent
+            Relative_Error_Gp = StdGp / MeanGp
+            Relative_Error_Cp = StdCp / MeanCp
+            Std_TanDelta = TangentLoss * np.sqrt(Relative_Error_Gp**2 + Relative_Error_Cp**2)
+            Error_TanDelta = Std_TanDelta / Root_N
 
-            # Aqui inicia el cambio en el codigo 
-            # Esta parte del codigo debe quedar igual 
+            # Here starts the change in the code 
+            # This part of the code must remain the same 
 
-    # --- ARMADO DEL DATAFRAME HORIZONTAL ---
-            sufijo = f"{tipo_archivo.upper()}_{muestra_archivo}"
+    # --- HORIZONTAL DATAFRAME ASSEMBLY ---
+            suffix = f"{file_type.upper()}_{file_sample}"
 
-            df_pellet_resultado = pd.DataFrame({
-                f'Biomasa_{sufijo}': [Biomasa] * len(Freq),
-                f'Tipo_{sufijo}': [tipo_archivo.upper()] * len(Freq),
-                f'Muestra_{sufijo}': [muestra_archivo] * len(Freq),
-                f'Frecuencia_Hz_{sufijo}': Freq.values,
+            df_pellet_result = pd.DataFrame({
+                f'Biomass_{suffix}': [Biomass] * len(Freq),
+                f'Type_{suffix}': [file_type.upper()] * len(Freq),
+                f'Sample_{suffix}': [file_sample] * len(Freq),
+                f'Frequency_Hz_{suffix}': Freq.values,
                 
-                # --- NUEVO: DATOS CRUDOS SIN CONVERTIR PARA TROUBLESHOOTING ---
-                f'Cp_Raw_{sufijo}': MeanCp.values,
-                f'Gp_Raw_{sufijo}': MeanGp.values,
+                # --- NEW: RAW UNCONVERTED DATA FOR TROUBLESHOOTING ---
+                f'Cp_Raw_{suffix}': MeanCp.values,
+                f'Gp_Raw_{suffix}': MeanGp.values,
                 
-                # Valores Centrales calculados
-                f'Tan_Delta_{sufijo}': TangentLoss.values,
-                f'Epsilon_Real_{sufijo}': RealE.values,
-                f'Epsilon_Imag_{sufijo}': ImaE.values,
-                f'Conductividad_{sufijo}': Conductividad.values,
+                # Calculated Central Values
+                f'Tan_Delta_{suffix}': TangentLoss.values,
+                f'Epsilon_Real_{suffix}': RealE.values,
+                f'Epsilon_Imag_{suffix}': ImaE.values,
+                f'Conductivity_{suffix}': Conductivity.values,
                 
-                # (El resto de tus columnas de errores y desviaciones estándar se quedan exactamente igual...)
+                # (The rest of your error and standard deviation columns remain exactly the same...)
 
-                # Desviación Estándar 
-                f'Std_TanDelta_{sufijo}': Std_TanDelta.values,
-                f'Std_EpsilonReal_{sufijo}': Std_RealE.values,
-                f'Std_EpsilonImag_{sufijo}': Std_ImaE.values,
-                f'Std_Conductividad_{sufijo}': Std_Conductividad.values, # NUEVO
+                # Standard Deviation 
+                f'Std_TanDelta_{suffix}': Std_TanDelta.values,
+                f'Std_EpsilonReal_{suffix}': Std_RealE.values,
+                f'Std_EpsilonImag_{suffix}': Std_ImaE.values,
+                f'Std_Conductivity_{suffix}': Std_Conductivity.values, # NEW
                 
-                # Error Estándar 
-                f'Error_TanDelta_{sufijo}': Error_TanDelta.values,
-                f'Error_EpsilonReal_{sufijo}': Error_RealE.values,
-                f'Error_EpsilonImag_{sufijo}': Error_ImaE.values,
-                f'Error_Conductividad_{sufijo}': Error_Conductividad.values # NUEVO
+                # Standard Error 
+                f'Error_TanDelta_{suffix}': Error_TanDelta.values,
+                f'Error_EpsilonReal_{suffix}': Error_RealE.values,
+                f'Error_EpsilonImag_{suffix}': Error_ImaE.values,
+                f'Error_Conductivity_{suffix}': Error_Conductivity.values # NEW
             })
             
-            Reporte_Global.append(df_pellet_resultado)
-            print(f"-> Datos y Errores de {tipo_archivo.upper()} ({muestra_archivo}) listos para consolidación.")
+            Global_Report.append(df_pellet_result)
+            print(f"-> Data and Errors of {file_type.upper()} ({file_sample}) ready for consolidation.")
 
 
 # ==============================================================================
-# CONSOLIDACIÓN Y EXPORTACIÓN FINAL A EXCEL (Fuera de los bucles)
+# CONSOLIDATION AND FINAL EXPORT TO EXCEL (Outside loops)
 # ==============================================================================
-    if Reporte_Global:
+    if Global_Report:
         
-        print(f"\nConcatenando pellets de {config['Nombre']} horizontalmente...")
-        Mega_Tabla_Final = pd.concat(Reporte_Global, axis=1)
+        print(f"\nConcatenating pellets of {config['Name']} horizontally...")
+        Mega_Final_Table = pd.concat(Global_Report, axis=1)
             
-        # Ruta dinámica del Excel basada en la carpeta activa
-        Ruta_Salida = os.path.join(config["Ruta_Base"], config["Nombre_Excel"])
-        Mega_Tabla_Final.to_excel(Ruta_Salida, index=False)
-        print(f"¡Reporte Excel consolidado guardado en:\n{Ruta_Salida}")
+        # Dynamic Excel path based on active folder
+        Output_Path = os.path.join(config["Base_Path"], config["Excel_Name"])
+        Mega_Final_Table.to_excel(Output_Path, index=False)
+        print(f"¡Consolidated Excel report saved in:\n{Output_Path}")
     else:
-        print("No se encontraron datos procesados para exportar.")
+        print("No processed data found to export.")
 
     # ==============================================================================
-    # MÓDULO DE DIAGNÓSTICO: GUARDADO AUTOMÁTICO
+    # DIAGNOSTIC MODULE: AUTOMATIC SAVING
     # ==============================================================================
-    print(f"\nGenerando y guardando gráficas de diagnóstico instrumental para {config['Nombre']}...")
+    print(f"\nGenerating and saving instrumental diagnostic plots for {config['Name']}...")
 
-    sufijos_diagnostico = [col.replace('Cp_Raw_', '') for col in Mega_Tabla_Final.columns if col.startswith('Cp_Raw_')]
+    diagnostic_suffixes = [col.replace('Cp_Raw_', '') for col in Mega_Final_Table.columns if col.startswith('Cp_Raw_')]
 
-    for sufijo in sufijos_diagnostico:
-        freq = Mega_Tabla_Final[f"Frecuencia_Hz_{sufijo}"]
-        cp_cruda = Mega_Tabla_Final[f"Cp_Raw_{sufijo}"]
-        gp_cruda = Mega_Tabla_Final[f"Gp_Raw_{sufijo}"]
-        etiqueta = sufijo.replace("_", " ")
+    for suffix in diagnostic_suffixes:
+        freq = Mega_Final_Table[f"Frequency_Hz_{suffix}"]
+        raw_cp = Mega_Final_Table[f"Cp_Raw_{suffix}"]
+        raw_gp = Mega_Final_Table[f"Gp_Raw_{suffix}"]
+        label = suffix.replace("_", " ")
         
-        # --- Gráfica A: Capacitancia ---
+        # --- Plot A: Capacitance ---
         fig_cp = plt.figure(figsize=(7, 4))
-        plt.loglog(freq, cp_cruda, '-o', color='tab:blue', markersize=4, label=f"Cp cruda ({etiqueta})")
+        plt.loglog(freq, raw_cp, '-o', color='tab:blue', markersize=4, label=f"Raw Cp ({label})")
         plt.xlabel('Frequency [Hz]', fontsize=11)
         plt.ylabel('Raw Capacitance Cp [F]', fontsize=11)
-        plt.title(f'Control de Calidad: Cp (Log-Log) - {etiqueta}')
+        plt.title(f'Quality Control: Cp (Log-Log) - {label}')
         plt.grid(True, which="both", ls="--", alpha=0.5)
         plt.legend()
         plt.tight_layout()
         
-        # Guardado automático y cierre
-        nombre_archivo_cp = os.path.join(Ruta_Diagnostico, f"Diagnostico_Cp_{sufijo}.jpg")
-        plt.savefig(nombre_archivo_cp, dpi=200, bbox_inches='tight')
+        # Automatic saving and closing
+        file_name_cp = os.path.join(Diagnostic_Path, f"Diagnostic_Cp_{suffix}.jpg")
+        plt.savefig(file_name_cp, dpi=200, bbox_inches='tight')
         plt.close(fig_cp)
         
-        # --- Gráfica B: Conductancia ---
+        # --- Plot B: Conductance ---
         fig_gp = plt.figure(figsize=(7, 4))
-        plt.semilogx(freq, gp_cruda, '-s', color='tab:orange', markersize=4, label=f"Gp cruda ({etiqueta})")
+        plt.semilogx(freq, raw_gp, '-s', color='tab:orange', markersize=4, label=f"Raw Gp ({label})")
         plt.xlabel('Frequency [Hz]', fontsize=11)
         plt.ylabel('Raw Conductance Gp [S]', fontsize=11)
-        plt.title(f'Control de Calidad: Gp (Semi-Log) - {etiqueta}')
+        plt.title(f'Quality Control: Gp (Semi-Log) - {label}')
         plt.grid(True, which="both", ls="--", alpha=0.5)
         plt.legend()
         plt.tight_layout()
         
-        # Guardado automático y cierre
-        nombre_archivo_gp = os.path.join(Ruta_Diagnostico, f"Diagnostico_Gp_{sufijo}.jpg")
-        plt.savefig(nombre_archivo_gp, dpi=200, bbox_inches='tight')
+        # Automatic saving and closing
+        file_name_gp = os.path.join(Diagnostic_Path, f"Diagnostic_Gp_{suffix}.jpg")
+        plt.savefig(file_name_gp, dpi=200, bbox_inches='tight')
         plt.close(fig_gp)
 
     # ==============================================================================
-    # MÓDULO DE VISUALIZACIÓN CIENTÍFICA (GRÁFICAS AUTOMATIZADAS)
+    # SCIENTIFIC VISUALIZATION MODULE (AUTOMATED PLOTS)
     # ==============================================================================
-    print(f"\nIniciando generación de gráficas científicas para {config['Nombre']}...")
+    print(f"\nStarting generation of scientific plots for {config['Name']}...")
 
-    # Preparamos los 3 lienzos de forma independiente antes de dibujar
+    # We prepare the 3 canvases independently before drawing
     fig_eps, ax_eps = plt.subplots(figsize=(8, 6))
     fig_sig, ax_sig = plt.subplots(figsize=(8, 6))
     fig_tan, ax_tan = plt.subplots(figsize=(8, 6))
 
-    # Filtramos los sufijos directamente de la tabla actual
-    sufijos_ciencia = [col.replace('Tipo_', '') for col in Mega_Tabla_Final.columns if col.startswith('Tipo_')]
+    # We filter the suffixes directly from the current table
+    science_suffixes = [col.replace('Type_', '') for col in Mega_Final_Table.columns if col.startswith('Type_')]
 
-    for sufijo in sufijos_ciencia:
-        # Extracción de vectores
-        freq = Mega_Tabla_Final[f"Frecuencia_Hz_{sufijo}"]
+    for suffix in science_suffixes:
+        # Vector extraction
+        freq = Mega_Final_Table[f"Frequency_Hz_{suffix}"]
         
-        eps = Mega_Tabla_Final[f"Epsilon_Real_{sufijo}"]
-        err_eps = Mega_Tabla_Final[f"Error_EpsilonReal_{sufijo}"]
+        eps = Mega_Final_Table[f"Epsilon_Real_{suffix}"]
+        err_eps = Mega_Final_Table[f"Error_EpsilonReal_{suffix}"]
         
-        sig = Mega_Tabla_Final[f"Conductividad_{sufijo}"]
-        err_sig = Mega_Tabla_Final[f"Error_Conductividad_{sufijo}"]
+        sig = Mega_Final_Table[f"Conductivity_{suffix}"]
+        err_sig = Mega_Final_Table[f"Error_Conductivity_{suffix}"]
         
-        tan = Mega_Tabla_Final[f"Tan_Delta_{sufijo}"]
-        err_tan = Mega_Tabla_Final[f"Error_TanDelta_{sufijo}"]
+        tan = Mega_Final_Table[f"Tan_Delta_{suffix}"]
+        err_tan = Mega_Final_Table[f"Error_TanDelta_{suffix}"]
         
-        etiqueta = sufijo.replace("_", " ")
+        label = suffix.replace("_", " ")
         
-        # Dibujamos las curvas (Esto se repite por cada pellet)
-        ax_eps.errorbar(freq, eps, yerr=err_eps, fmt='-o', markersize=4, capsize=3, alpha=0.8, label=etiqueta)
-        ax_sig.errorbar(freq, sig, yerr=err_sig, fmt='-s', markersize=4, capsize=3, alpha=0.8, label=etiqueta)
-        ax_tan.errorbar(freq, tan, yerr=err_tan, fmt='-^', markersize=4, capsize=3, alpha=0.8, label=etiqueta)
+        # We draw the curves (This repeats for each pellet)
+        ax_eps.errorbar(freq, eps, yerr=err_eps, fmt='-o', markersize=4, capsize=3, alpha=0.8, label=label)
+        ax_sig.errorbar(freq, sig, yerr=err_sig, fmt='-s', markersize=4, capsize=3, alpha=0.8, label=label)
+        ax_tan.errorbar(freq, tan, yerr=err_tan, fmt='-^', markersize=4, capsize=3, alpha=0.8, label=label)
                 
-    # --- Formato Estético (FUERA del bucle de sufijos, se ejecuta una sola vez por biomasa) ---
-    biomasa = config["Nombre"]
+    # --- Aesthetic Format (OUTSIDE the suffix loop, executed only once per biomass) ---
+    biomass = config["Name"]
 
     ax_eps.set_xscale('log')
     ax_eps.set_xlabel('Frequency [Hz]', fontsize=12)
     ax_eps.set_ylabel(r'$\epsilon_r$', fontsize=14)
-    ax_eps.set_title(f'Permitividad Relativa - {biomasa}')
+    ax_eps.set_title(f'Relative Permittivity - {biomass}')
     ax_eps.legend(fontsize=9)
     ax_eps.grid(True, which="both", ls="--", alpha=0.4)
 
     ax_sig.set_xscale('log')
     ax_sig.set_xlabel('Frequency [Hz]', fontsize=12)
     ax_sig.set_ylabel(r'$\sigma_{ac}$ [S/cm]', fontsize=14)
-    ax_sig.set_title(f'Conductividad AC - {biomasa}')
+    ax_sig.set_title(f'AC Conductivity - {biomass}')
     ax_sig.legend(fontsize=9)
     ax_sig.grid(True, which="both", ls="--", alpha=0.4)
 
     ax_tan.set_xscale('log')
     ax_tan.set_xlabel('Frequency [Hz]', fontsize=12)
     ax_tan.set_ylabel(r'$\tan(\delta)$', fontsize=14)
-    ax_tan.set_title(f'Tangente de Pérdidas - {biomasa}')
+    ax_tan.set_title(f'Loss Tangent - {biomass}')
     ax_tan.legend(fontsize=9)
     ax_tan.grid(True, which="both", ls="--", alpha=0.4)
 
-    # --- Guardado Automático Dinámico (FUERA del bucle de sufijos) ---
-    nombre_archivo = biomasa.replace(" ", "_")
-    ruta_guardado = config["Ruta_Imagenes"]
+    # --- Dynamic Automatic Saving (OUTSIDE the suffix loop) ---
+    file_name = biomass.replace(" ", "_")
+    save_path = config["Images_Path"]
 
-    fig_eps.savefig(os.path.join(ruta_guardado, f"Permittivity_{nombre_archivo}.jpg"), dpi=300, bbox_inches='tight')
-    fig_sig.savefig(os.path.join(ruta_guardado, f"Conductivity_{nombre_archivo}.jpg"), dpi=300, bbox_inches='tight')
-    fig_tan.savefig(os.path.join(ruta_guardado, f"LossTangent_{nombre_archivo}.jpg"), dpi=300, bbox_inches='tight')
+    fig_eps.savefig(os.path.join(save_path, f"Permittivity_{file_name}.jpg"), dpi=300, bbox_inches='tight')
+    fig_sig.savefig(os.path.join(save_path, f"Conductivity_{file_name}.jpg"), dpi=300, bbox_inches='tight')
+    fig_tan.savefig(os.path.join(save_path, f"LossTangent_{file_name}.jpg"), dpi=300, bbox_inches='tight')
 
-    # Liberamos memoria
+    # We free memory
     plt.close(fig_eps)
     plt.close(fig_sig)
     plt.close(fig_tan)
